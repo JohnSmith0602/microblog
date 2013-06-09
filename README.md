@@ -9,7 +9,7 @@ microblog
 
 下载项目后，可以进入项目的根目录(cd microblog)里，用npm install安装项目的依赖
 
-	"express": "*",
+    "express": "*",
     "ejs": "*",
     "mongodb": "*",
     "connect-mongo": "*",
@@ -18,8 +18,8 @@ microblog
 
 然后安装好你的node.js和mongodb,开启mongodb数据库服务，就可以命令行node app开启整个项目
 
-项目利用socket.io实现了每一个人发一条微博后，在3秒钟内，会被分发到所有同样访问到主页的人的页面上，
-已经实现了微薄的基本功能。
+项目利用socket.io实现了每一个人发一条微博后，在5秒钟内，会被分发到所有同样访问到主页的人的页面上，
+已经实现了微薄的基本功能。在chrome和firefox下已经测试过，效果不错。
 
 这里也利用了mongoose驱动，使数据库的操作更规范话
 
