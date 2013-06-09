@@ -41,7 +41,7 @@ module.exports = function(server) {
         socket.on('disconnect', function() {
             clearInterval(tweets);
             delete allUsersMap[connecterID];
-            console.log("\nconnecter：" + connecterID + "离开微薄。");
+            console.log("\nconnecter：" + connecterID + " 离开微薄。");
         });
 
     });
