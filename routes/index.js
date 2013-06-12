@@ -104,6 +104,7 @@ module.exports = function(app) {
 	};
 
 	var login = function(req, res) {
+
 		res.render('login', {
 			title: '用户登入'
 		});
@@ -118,11 +119,17 @@ module.exports = function(app) {
 				req.session.error = '用户不存在';
 				return res.redirect('/login');
 			}
-
+			console.log(req.body.password);
 			hash(req.body.password, user.salt, function(err, hash) {
 				if (err || hash != user.hash) {
 					req.session.error = "用户密码错误";
 					return res.redirect('/login');
+				}
+				if (req.body.remember) {
+					var minute = 60000;
+					res.cookie('username', user.name, {
+						maxAge: minute
+					});
 				}
 				req.session.user = user;
 				req.session.success = '登入成功';
@@ -135,6 +142,7 @@ module.exports = function(app) {
 
 		req.session.user = null;
 		req.session.success = '登出成功';
+		res.clearCookie('username');
 		res.redirect('/');
 	};
 
@@ -148,8 +156,22 @@ module.exports = function(app) {
 
 	var checkNotLogin = function(req, res, next) {
 		if (req.session.user) {
+			console.log("用户从session提取到");
 			req.session.error = '已登入';
 			return res.redirect('/');
+		} else if (req.cookies.username) {
+			console.log("用户从cookie提取到");
+			User.findOne({
+				name: req.cookies.username
+			}, function(err, user) {
+				if (!user) {
+					req.session.error = "用户不存在";
+					return res.redirect('/');
+				}
+				req.session.user = user;
+				req.session.success = '登入成功';
+				res.redirect('/');
+			});
 		}
 		next();
 	};
